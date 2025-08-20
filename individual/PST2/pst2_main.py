@@ -65,9 +65,8 @@ def update_teacher(teacher_id, **fields):
     print(f"Error: Teacher with ID {teacher_id} not found.")
 
 def remove_student(student_id):
-    for student in app_data["students"]:
-        if student['id'] == student_id:
-            student.remove()
+    for students in app_data['students']:
+        student.remove(students)
     """Removes a student from the data store."""
     # TODO: Find the student dictionary in app_data['students'] with the matching ID.
     # If found, use the .remove() method on the list to delete it.
@@ -76,3 +75,4 @@ def remove_student(student_id):
     pass
     
 # TODO: Implement remove_teacher() and update_student() using the patterns above.
+remove_student(student_id)
