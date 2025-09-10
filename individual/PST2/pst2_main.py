@@ -65,14 +65,106 @@ def update_teacher(teacher_id, **fields):
     print(f"Error: Teacher with ID {teacher_id} not found.")
 
 def remove_student(student_id):
-    for students in app_data['students']:
-        student.remove(students)
-    """Removes a student from the data store."""
+    for student in app_data['students']:
+        if student['id'] == student_id:
+            student.remove(student_id)
+            print(f"Teacher {student_id} updated.")
+            return
+    print(f"Error: Student with ID {student_id} not found.")
+    """removes a student from the data store."""
+        
     # TODO: Find the student dictionary in app_data['students'] with the matching ID.
     # If found, use the .remove() method on the list to delete it.
     # A list comprehension is a clean way to do this:
     # app_data['students'] = [s for s in app_data['students'] if s['id'] != student_id]
     pass
     
-# TODO: Implement remove_teacher() and update_student() using the patterns above.
-remove_student(student_id)
+    # TODO: Implement remove_teacher() and update_student() using the patterns above.
+
+# --- New Receptionist Features ---
+def check_in(student_id, course_id, timestamp=None):
+    """Records a student's attendance for a course."""
+    if timestamp is None:
+        # TODO: Get the current time as a string using datetime.datetime.now().isoformat()
+        timestamp = datetime.datetime.now().isoformat()
+    
+    # TODO: Create a check-in record dictionary.
+    # It should contain 'student_id', 'course_id', and 'timestamp'.
+    check_in_record = {
+        "student_id": student_id,
+        "course_id": course_id,
+        "timestamp": timestamp
+    }
+    # TODO: Append this new record to the app_data['attendance'] list.
+    app_data['attendance'].append(check_in_record)
+    print(f"Receptionist: Student {student_id} checked into {course_id}.")
+
+def print_student_card(student_id):
+    """Creates a text file badge for a student."""
+    # TODO: Find the student dictionary in app_data['students'].
+    student_to_print = None
+    for s in app_data['students']:
+        if s['id'] == student_id:
+            student_to_print = s
+            break
+    
+    if student_to_print:
+        # TODO: Create a filename, e.g., f"{student_id}_card.txt".
+        filename = f"{student_id}_card.txt"
+        # TODO: Open the file in write mode ('w').
+        with open(filename, 'w') as f:
+            # Write the student's details to the file in a nice format.
+            f.write("========================\n")
+            f.write(f"  MUSIC SCHOOL ID BADGE\n")
+            f.write("========================\n")
+            f.write(f"ID: {student_to_print['id']}\n")
+            f.write(f"Name: {student_to_print['name']}\n")
+            f.write(f"Enrolled In: {', '.join(student_to_print.get('enrolled_in', []))}\n")
+        print(f"Printed student card to {filename}.")
+    else:
+        print(f"Error: Could not print card, student {student_id} not found.")
+# --- Main Application Loop ---
+def main():
+    """Main function to run the MSMS application."""
+    load_data() # Load all data from file at startup.
+
+    while True:
+        print("\n===== MSMS v2 (Persistent) =====")
+        print("1. Check-in Student")
+        print("2. Print Student Card")
+        print("3. Update Teacher Info")
+        print("4. Remove Student")
+        print("q. Quit and Save")
+        
+        choice = input("Enter your choice: ")
+        
+        made_change = False # A flag to track if we need to save
+        if choice == '1':
+            print("works")
+            # TODO: Get student_id and course_id from user, then call check_in().
+            made_change = True
+        elif choice == '2':
+            # TODO: Get student_id, then call print_student_card().
+            print_student_card()
+            pass # No change made, so no save needed
+        elif choice == '3':
+            # TODO: Get teacher_id and new details, then call update_teacher().
+            # Example: update_teacher(1, speciality="Advanced Piano")
+            made_change = True
+        elif choice == '4':
+            # TODO: Get student_id, then call remove_student().
+            made_change = True
+        elif choice.lower() == 'q':
+            print("Saving final changes and exiting.")
+            break
+        else:
+            print("Invalid choice.")
+            
+        if made_change:
+            save_data() # Save the data immediately after any change.
+
+    save_data() # One final save on exit.
+
+# --- Program Start ---
+if __name__ == "__main__":
+    main()

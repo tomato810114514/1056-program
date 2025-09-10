@@ -17,6 +17,7 @@ def main():
         if choice == '1':
             # TODO: Get student_id and course_id from user, then call check_in().
             made_change = True
+            check_in()
         elif choice == '2':
             # TODO: Get student_id, then call print_student_card().
             pass # No change made, so no save needed
