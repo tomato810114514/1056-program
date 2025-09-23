@@ -1,0 +1,18 @@
+{
+    "students": [
+        {
+            "user_id": "S1",
+            "name": "1",
+            "instrument": "a",
+            "enrolled_course_ids": []
+        },
+        {
+            "user_id": "S2",
+            "name": "2",
+            "instrument": "b",
+            "enrolled_course_ids": []
+        }
+    ],
+    "teachers": [],
+    "courses": []
+}
